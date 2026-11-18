@@ -1,0 +1,6 @@
+{
+  "name": "StudyMate",
+  "description": "Find compatible academic study partners, collaborate in real-time chat, and schedule conflict-free study sessions together.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

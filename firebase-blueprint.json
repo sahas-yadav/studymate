@@ -1,0 +1,196 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Public academic profile for peer matching, availability, and study preferences",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "fullName": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "avatarUrl": { "type": "string", "maxLength": 2000 },
+        "university": { "type": "string", "maxLength": 140 },
+        "course": { "type": "string", "maxLength": 140 },
+        "year": { "type": "string", "maxLength": 40 },
+        "bio": { "type": "string", "maxLength": 600 },
+        "subjects": { "type": "array" },
+        "strengths": { "type": "array" },
+        "weaknesses": { "type": "array" },
+        "availabilitySlots": { "type": "array" },
+        "studyStyle": { "type": "string", "enum": ["quiet", "collaborative", "discussion", "pomodoro"] },
+        "studyMode": { "type": "string", "enum": ["online", "in-person", "hybrid"] },
+        "goals": { "type": "array" },
+        "visibility": { "type": "string", "enum": ["public", "connections", "private"] },
+        "onboardingCompleted": { "type": "boolean" },
+        "isOnline": { "type": "boolean" },
+        "lastSeen": { "type": "string", "format": "date-time" },
+        "streakDays": { "type": "number" },
+        "totalHours": { "type": "number" },
+        "sessionsCompleted": { "type": "number" },
+        "ratingAvg": { "type": "number" },
+        "reviewCount": { "type": "number" },
+        "weeklyHours": { "type": "array" },
+        "isSample": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "fullName", "visibility", "onboardingCompleted", "createdAt", "updatedAt"]
+    },
+    "PrivateUserInfo": {
+      "title": "PrivateUserInfo",
+      "description": "Private PII and notification/privacy settings isolated from public partner search",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "email": { "type": "string", "format": "email", "maxLength": 200 },
+        "notificationPrefs": { "type": "object" },
+        "privacyPrefs": { "type": "object" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "updatedAt"]
+    },
+    "Connection": {
+      "title": "Connection",
+      "description": "Peer connection request or accepted study partnership between two students",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "fromUserId": { "type": "string", "maxLength": 128 },
+        "toUserId": { "type": "string", "maxLength": 128 },
+        "participantIds": { "type": "array" },
+        "status": { "type": "string", "enum": ["pending", "accepted", "declined"] },
+        "message": { "type": "string", "maxLength": 400 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["fromUserId", "toUserId", "participantIds", "status", "createdAt", "updatedAt"]
+    },
+    "Conversation": {
+      "title": "Conversation",
+      "description": "1-to-1 or group chat thread",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "type": { "type": "string", "enum": ["direct", "group"] },
+        "name": { "type": "string", "maxLength": 120 },
+        "subject": { "type": "string", "maxLength": 120 },
+        "description": { "type": "string", "maxLength": 400 },
+        "participantIds": { "type": "array" },
+        "createdBy": { "type": "string", "maxLength": 128 },
+        "lastMessageText": { "type": "string", "maxLength": 500 },
+        "lastMessageAt": { "type": "string", "format": "date-time" },
+        "lastMessageSenderId": { "type": "string", "maxLength": 128 },
+        "unreadCounts": { "type": "object" },
+        "typingUsers": { "type": "object" },
+        "isPublicGroup": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["type", "participantIds", "createdBy", "createdAt", "updatedAt"]
+    },
+    "Message": {
+      "title": "Message",
+      "description": "Individual message in a conversation subcollection",
+      "type": "object",
+      "properties": {
+        "senderId": { "type": "string", "maxLength": 128 },
+        "senderName": { "type": "string", "maxLength": 100 },
+        "text": { "type": "string", "maxLength": 2000 },
+        "attachmentUrl": { "type": "string", "maxLength": 500000 },
+        "attachmentName": { "type": "string", "maxLength": 200 },
+        "attachmentType": { "type": "string", "maxLength": 100 },
+        "sessionProposalId": { "type": "string", "maxLength": 128 },
+        "readBy": { "type": "array" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["senderId", "senderName", "text", "readBy", "createdAt"]
+    },
+    "StudySession": {
+      "title": "StudySession",
+      "description": "Scheduled 1-to-1 or group study session",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "minLength": 1, "maxLength": 140 },
+        "subject": { "type": "string", "maxLength": 120 },
+        "creatorId": { "type": "string", "maxLength": 128 },
+        "participantIds": { "type": "array" },
+        "participantResponses": { "type": "object" },
+        "startTime": { "type": "string", "format": "date-time" },
+        "durationMinutes": { "type": "number" },
+        "mode": { "type": "string", "enum": ["online", "in-person"] },
+        "locationOrLink": { "type": "string", "maxLength": 300 },
+        "notes": { "type": "string", "maxLength": 1000 },
+        "status": { "type": "string", "enum": ["pending", "accepted", "declined", "cancelled", "completed"] },
+        "conversationId": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "subject", "creatorId", "participantIds", "startTime", "durationMinutes", "mode", "status", "createdAt", "updatedAt"]
+    },
+    "Notification": {
+      "title": "Notification",
+      "description": "In-app notification for connection requests, session invites, and reminders",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "maxLength": 128 },
+        "type": { "type": "string", "enum": ["connection_request", "connection_accepted", "session_invite", "session_update", "session_reminder", "message", "review"] },
+        "title": { "type": "string", "maxLength": 140 },
+        "body": { "type": "string", "maxLength": 400 },
+        "link": { "type": "string", "maxLength": 200 },
+        "relatedId": { "type": "string", "maxLength": 128 },
+        "read": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "type", "title", "body", "read", "createdAt"]
+    },
+    "PartnerReview": {
+      "title": "PartnerReview",
+      "description": "Rating and review from a study partner",
+      "type": "object",
+      "properties": {
+        "targetUserId": { "type": "string", "maxLength": 128 },
+        "authorId": { "type": "string", "maxLength": 128 },
+        "authorName": { "type": "string", "maxLength": 100 },
+        "authorAvatar": { "type": "string", "maxLength": 2000 },
+        "rating": { "type": "number" },
+        "comment": { "type": "string", "maxLength": 600 },
+        "subject": { "type": "string", "maxLength": 120 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["targetUserId", "authorId", "authorName", "rating", "comment", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Public student profile for matching and discovery"
+    },
+    "/users/{userId}/private/{docId}": {
+      "schema": { "$ref": "#/entities/PrivateUserInfo" },
+      "description": "Owner-only PII and preferences"
+    },
+    "/connections/{connectionId}": {
+      "schema": { "$ref": "#/entities/Connection" },
+      "description": "Peer connection requests and friendships"
+    },
+    "/conversations/{conversationId}": {
+      "schema": { "$ref": "#/entities/Conversation" },
+      "description": "Real-time direct and group chat threads"
+    },
+    "/conversations/{conversationId}/messages/{messageId}": {
+      "schema": { "$ref": "#/entities/Message" },
+      "description": "Messages belonging to a conversation"
+    },
+    "/sessions/{sessionId}": {
+      "schema": { "$ref": "#/entities/StudySession" },
+      "description": "Scheduled study sessions"
+    },
+    "/notifications/{notificationId}": {
+      "schema": { "$ref": "#/entities/Notification" },
+      "description": "User-scoped notifications"
+    },
+    "/reviews/{reviewId}": {
+      "schema": { "$ref": "#/entities/PartnerReview" },
+      "description": "Partner ratings and reviews"
+    }
+  }
+}
