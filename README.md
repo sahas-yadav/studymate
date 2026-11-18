@@ -21,9 +21,8 @@ StudyMate is a full-stack academic peer-matching, real-time messaging, and study
 
 2. **Firebase configuration**:
    - The app reads Firebase configuration from `firebase-applet-config.json` in the project root (`projectId`, `apiKey`, `authDomain`, `firestoreDatabaseId`, `storageBucket`).
-   - **Enable Authentication Providers**:
-     - Google Sign-In is ready by default.
-     - To use Email/Password sign-up, login, password reset, and password change, open your Firebase Console → **Authentication** → **Sign-in method** → enable **Email/Password**.
+   - **Authentication**:
+     - Email/Password sign-up, login, password reset, and password change are supported (enable **Email/Password** under Firebase Console → **Authentication** → **Sign-in method**, or use **Instant Demo Login** out of the box).
 
 3. **Environment variables**:
    - Copy `.env.example` if deploying outside AI Studio (`GEMINI_API_KEY`, `APP_URL`). Firebase web credentials live in `firebase-applet-config.json`.
@@ -41,7 +40,7 @@ StudyMate is a full-stack academic peer-matching, real-time messaging, and study
 
 6. **Deploy to Vercel**:
    - `vercel.json` is included so client-side React Router routes (`/dashboard`, `/chat`, `/schedule`, etc.) resolve cleanly without 404 errors on page refresh.
-   - To enable **Google Sign-In** on your deployed Vercel URL, open Firebase Console → **Authentication** → **Settings** → **Authorized domains** → **Add domain** and paste your Vercel hostname (e.g. `your-app.vercel.app`). Email/Password and **Instant Demo Enter** work out of the box.
+   - Email/Password and **Instant Demo Enter** work out of the box on your deployed URL.
 
 ## Suggested Future Enhancements
 

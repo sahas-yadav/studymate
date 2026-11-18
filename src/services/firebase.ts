@@ -9,7 +9,6 @@ const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
 export const auth = getAuth(app);
 export const storage = getStorage(app);
-export const FIREBASE_PROJECT_ID = firebaseConfig.projectId;
 
 export enum OperationType {
   CREATE = 'create',
@@ -89,16 +88,8 @@ export function mapAuthErrorMessage(err: unknown): string {
       return 'Password should be at least 6 characters long.';
     case 'auth/invalid-email':
       return 'Please enter a valid email address.';
-    case 'auth/popup-closed-by-user':
-      return 'Google sign-in popup was closed before finishing.';
-    case 'auth/popup-blocked':
-      return 'Popup was blocked by your browser. Please allow popups for this site.';
-    case 'auth/unauthorized-domain': {
-      const host = typeof window !== 'undefined' ? window.location.hostname : 'this domain';
-      return `Domain "${host}" is not authorized for Google Sign-In yet. Add "${host}" in Firebase Console -> Authentication -> Settings -> Authorized domains, or use Email / Instant Demo right now.`;
-    }
     case 'auth/operation-not-allowed':
-      return 'Unable to connect to email provider. Please use Instant Demo Login or Google Sign-In.';
+      return 'Unable to connect to email provider. Please use Instant Demo Login.';
     case 'auth/requires-recent-login':
       return 'For security, please log out and sign back in before changing sensitive account credentials.';
     case 'auth/too-many-requests':

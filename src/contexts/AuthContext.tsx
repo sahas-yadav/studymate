@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import {
   EmailAuthProvider,
-  GoogleAuthProvider,
   User,
   browserLocalPersistence,
   browserSessionPersistence,
@@ -12,7 +11,6 @@ import {
   sendPasswordResetEmail,
   setPersistence,
   signInWithEmailAndPassword,
-  signInWithPopup,
   signOut,
   updatePassword,
   updateProfile,
@@ -50,7 +48,6 @@ interface AuthContextValue {
   profileLoading: boolean;
   signupWithEmail: (fullName: string, email: string, password: string) => Promise<void>;
   loginWithEmail: (email: string, password: string, rememberMe: boolean) => Promise<void>;
-  loginWithGoogle: () => Promise<{ isNewProfile: boolean }>;
   enterDemoMode: () => Promise<void>;
   sendResetEmail: (email: string) => Promise<void>;
   changePassword: (currentPassword: string, newPassword: string) => Promise<void>;
@@ -215,31 +212,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const loginWithGoogle = async (): Promise<{ isNewProfile: boolean }> => {
-    const provider = new GoogleAuthProvider();
-    provider.setCustomParameters({ prompt: 'select_account' });
-    const cred = await signInWithPopup(auth, provider);
-    localLogout();
-    setLocalUid(null);
-    const userRef = doc(db, 'users', cred.user.uid);
-    const { getDoc } = await import('firebase/firestore');
-    const existing = await getDoc(userRef);
-    if (!existing.exists()) {
-      await createOrUpdateUserProfile(
-        cred.user.uid,
-        {
-          fullName: cred.user.displayName || 'StudyMate Student',
-          avatarUrl: cred.user.photoURL || '',
-          onboardingCompleted: false,
-        },
-        true
-      );
-      await savePrivateUserInfo(cred.user.uid, cred.user.email || '');
-      return { isNewProfile: true };
-    }
-    return { isNewProfile: !existing.data()?.onboardingCompleted };
-  };
-
   const enterDemoMode = async () => {
     if (auth.currentUser) {
       await signOut(auth);
@@ -321,7 +293,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         profileLoading,
         signupWithEmail,
         loginWithEmail,
-        loginWithGoogle,
         enterDemoMode,
         sendResetEmail,
         changePassword,
