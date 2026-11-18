@@ -93,6 +93,10 @@ export function mapAuthErrorMessage(err: unknown): string {
       return 'Google sign-in popup was closed before finishing.';
     case 'auth/popup-blocked':
       return 'Popup was blocked by your browser. Please allow popups for this site.';
+    case 'auth/unauthorized-domain': {
+      const host = typeof window !== 'undefined' ? window.location.hostname : 'this domain';
+      return `Domain "${host}" is not authorized for Google Sign-In yet. Add "${host}" in Firebase Console -> Authentication -> Settings -> Authorized domains, or use Email / Instant Demo right now.`;
+    }
     case 'auth/operation-not-allowed':
       return 'Unable to connect to email provider. Please use Instant Demo Login or Google Sign-In.';
     case 'auth/requires-recent-login':

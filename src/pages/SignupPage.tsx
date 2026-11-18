@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { AlertCircle, BookOpen, Check, Eye, EyeOff, Loader2, Zap } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '../contexts/ToastContext';
-import { mapAuthErrorMessage } from '../services/firebase';
+import { FIREBASE_PROJECT_ID, mapAuthErrorMessage } from '../services/firebase';
 import { evaluatePasswordStrength } from '../utils/matching';
 
 export function SignupPage() {
@@ -135,7 +135,19 @@ export function SignupPage() {
               className="mt-5 rounded-xl border border-rose-200 dark:border-rose-900/70 bg-rose-50 dark:bg-rose-950/40 p-3.5 text-sm text-rose-800 dark:text-rose-200 flex items-start gap-2.5"
             >
               <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
-              <p>{error}</p>
+              <div className="space-y-1.5">
+                <p>{error}</p>
+                {error.includes('Authorized domains') && (
+                  <a
+                    href={`https://console.firebase.google.com/project/${FIREBASE_PROJECT_ID}/authentication/settings`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-block text-xs font-semibold underline"
+                  >
+                    Open Firebase Authorized Domains Settings →
+                  </a>
+                )}
+              </div>
             </div>
           )}
 

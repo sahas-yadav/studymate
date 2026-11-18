@@ -39,6 +39,10 @@ StudyMate is a full-stack academic peer-matching, real-time messaging, and study
    npm run build   # Production bundle into dist/
    ```
 
+6. **Deploy to Vercel**:
+   - `vercel.json` is included so client-side React Router routes (`/dashboard`, `/chat`, `/schedule`, etc.) resolve cleanly without 404 errors on page refresh.
+   - To enable **Google Sign-In** on your deployed Vercel URL, open Firebase Console → **Authentication** → **Settings** → **Authorized domains** → **Add domain** and paste your Vercel hostname (e.g. `your-app.vercel.app`). Email/Password and **Instant Demo Enter** work out of the box.
+
 ## Suggested Future Enhancements
 
 - **Video Study Rooms**: Built-in WebRTC / LiveKit audio-video rooms with shared Pomodoro timers inside scheduled sessions.
